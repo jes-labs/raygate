@@ -18,13 +18,13 @@ Every paid API today requires the same ritual: create an account, add a credit c
 
 1. **AI agents can't sign up for accounts.** The agentic economy runs on autonomous software that needs to pay for services without a human in the loop.
 2. **Micropayments don't work with credit cards.** Charging $0.001 per API call through Stripe costs more in fees than the payment itself.
-3. **Beam has no x402 facilitator.** Base, Solana, Stellar, XRPL, and Polygon all have one. Beam — despite being purpose-built for gaming, AI, and compute — does not.
+3. **Beam has no x402 facilitator.** Base, Solana, Stellar, XRPL, and Polygon all have one. Beam despite being purpose-built for gaming, AI, and compute does not.
 
 Raygate fixes all three.
 
 ## Why Beam Needs This Now
 
-The x402 protocol turns HTTP into a payment rail. Any API can return `402 Payment Required` with a price, and any client — human or machine — can pay and retry in a single round-trip. No middleware. No billing vendor. No accounts.
+The x402 protocol turns HTTP into a payment rail. Any API can return `402 Payment Required` with a price, and any client human or machine can pay and retry in a single round-trip. No middleware. No billing vendor. No accounts.
 
 Beam's own verticals are the exact sectors driving x402 adoption everywhere else:
 
@@ -37,7 +37,7 @@ Beam's own verticals are the exact sectors driving x402 adoption everywhere else
 
 Every other major EVM chain already participates in the machine-native payment economy. Without an x402 facilitator, Beam's APIs, gaming assets, and AI inference endpoints are invisible to the thousands of AI agents already making autonomous payments across the x402 ecosystem.
 
-**Raygate is the bridge.** It makes Beam a first-class citizen in the agentic economy — and it's the first to do it.
+**Raygate is the bridge.** It makes Beam a first-class citizen in the agentic economy and it's the first to do it.
 
 ## How It Works
 
@@ -59,19 +59,19 @@ Client (AI Agent / Browser)          Resource Server              Raygate Facili
         │                                  │<─ { txHash } ───────────────│                      │
 ```
 
-**Verify** is local — pure EIP-712 signature check, zero RPC calls, under 50ms.
+**Verify** is local pure EIP-712 signature check, zero RPC calls, under 50ms.
 
-**Settle** is atomic — Permit2 verifies the signature, transfers tokens from payer to merchant, and marks the nonce as used in a single transaction. ~3 seconds on Beam.
+**Settle** is atomic Permit2 verifies the signature, transfers tokens from payer to merchant, and marks the nonce as used in a single transaction. ~3 seconds on Beam.
 
 **The payer never submits a transaction.** They sign an off-chain message. The facilitator pays gas. From the payer's perspective, it's gasless.
 
 ## Why Permit2, Not EIP-3009
 
-The standard x402 EVM scheme uses `transferWithAuthorization` (EIP-3009), which USDC on Base natively supports. But Beam uses LayerZero-bridged USDC — an OFT wrapper that doesn't implement EIP-3009.
+The standard x402 EVM scheme uses `transferWithAuthorization` (EIP-3009), which USDC on Base natively supports. But Beam uses LayerZero-bridged USDC an OFT wrapper that doesn't implement EIP-3009.
 
 [Permit2](https://github.com/Uniswap/permit2) (Uniswap's universal token allowance contract) solves this cleanly:
 
-- Works with **any ERC-20** — USDC, BEAM token, any future Beam ecosystem token
+- Works with **any ERC-20** USDC, BEAM token, any future Beam ecosystem token
 - **Already deployed** on Beam at `0x000000000022D473030F116dDEE9F6B43aC78BA3`
 - **No contract deployment** required
 - Nonce bitmap provides **on-chain replay protection**
@@ -82,9 +82,9 @@ The standard x402 EVM scheme uses `transferWithAuthorization` (EIP-3009), which 
 | Package | Description |
 |---|---|
 | [`@raygate/core`](./packages/core) | Shared types, Permit2 ABI, Beam chain definitions, encoding utilities |
-| [`@raygate/facilitator`](./packages/facilitator) | Standalone Express service — `/verify`, `/settle`, `/capabilities`, `/health` |
+| [`@raygate/facilitator`](./packages/facilitator) | Standalone Express service `/verify`, `/settle`, `/capabilities`, `/health` |
 | [`@raygate/express`](./packages/express) | One-line Express middleware for gating any route with x402 payments |
-| [`@raygate/client`](./packages/client) | Client library — `beamFetch()` handles the full 402 → sign → retry loop |
+| [`@raygate/client`](./packages/client) | Client library `beamFetch()` handles the full 402 → sign → retry loop |
 
 ## Quick Start
 
@@ -172,7 +172,7 @@ app.listen(config.port, () => {
 });
 ```
 
-Required environment variables — see [`.env.example`](./.env.example) for the full list.
+Required environment variables see [`.env.example`](./.env.example) for the full list.
 
 ## Architecture
 
@@ -226,13 +226,13 @@ pnpm --filter @raygate/facilitator dev
 | USDC (LayerZero-bridged) | 6 | $0.10 | `"100000"` |
 | BEAM | 18 | 0.001 BEAM | `"1000000000000000"` |
 
-Additional Beam ecosystem ERC-20 tokens can be supported without code changes — Permit2 works with any ERC-20.
+Additional Beam ecosystem ERC-20 tokens can be supported without code changes Permit2 works with any ERC-20.
 
 ## Security
 
-- **Signatures are verified locally** — no RPC calls in `/verify`, no network latency, no external dependency
-- **Permit2 nonce bitmaps** provide on-chain replay protection — each signature can only be used once
-- **Facilitator wallet is gas-only** — it never holds user funds; tokens flow directly from payer to merchant
+- **Signatures are verified locally** no RPC calls in `/verify`, no network latency, no external dependency
+- **Permit2 nonce bitmaps** provide on-chain replay protection each signature can only be used once
+- **Facilitator wallet is gas-only** it never holds user funds; tokens flow directly from payer to merchant
 - **Deadlines** are enforced both off-chain (30s grace for clock skew) and on-chain by the Permit2 contract
 - **Rate limiting** on `/settle` prevents gas-draining attacks
 
@@ -246,6 +246,6 @@ Contributions are welcome. Please open an issue first to discuss what you'd like
 
 ---
 
-**Raygate** — Bringing Beam into the machine-native payment economy.
+**Raygate** Bringing Beam into the machine-native payment economy.
 
 [x402 Protocol](https://www.x402.org) · [Beam Docs](https://docs.onbeam.com) · [Permit2](https://github.com/Uniswap/permit2)
