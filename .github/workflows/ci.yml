@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20, 22]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Run tests
+        run: pnpm test
+
+  build-demo:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Build demo app
+        run: pnpm --filter @raygate/demo build
+        env:
+          NEXT_PUBLIC_USER_WALLET: "0x0000000000000000000000000000000000000000"
+          NEXT_PUBLIC_MERCHANT_WALLET: "0x0000000000000000000000000000000000000000"
+          NEXT_PUBLIC_FACILITATOR_WALLET: "0x0000000000000000000000000000000000000000"
+          NEXT_PUBLIC_USDC_ADDRESS: "0x007Fdc86FD12924C9116025C7F594843087397E3"
+          NEXT_PUBLIC_BEAM_TOKEN_ADDRESS: "0xF65B6f9c94187276C7d91F4F74134751d248bFeA"
