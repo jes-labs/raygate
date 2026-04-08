@@ -6,7 +6,8 @@ import { privateKeyToAccount } from "viem/accounts";
 import { createWalletClient, http as viemHttp } from "viem";
 import { beamTestnet } from "@raygate/core";
 
-const TEST_PRIVATE_KEY = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+const TEST_PRIVATE_KEY =
+  "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 
 function createTestWalletClient() {
   const account = privateKeyToAccount(TEST_PRIVATE_KEY);
@@ -17,7 +18,9 @@ function createTestWalletClient() {
   });
 }
 
-function listenAsync(app: express.Express): Promise<{ server: http.Server; port: number }> {
+function listenAsync(
+  app: express.Express,
+): Promise<{ server: http.Server; port: number }> {
   return new Promise((resolve) => {
     const server = app.listen(0, () => {
       const addr = server.address() as { port: number };
@@ -42,7 +45,7 @@ describe("createBeamFetch", () => {
 
     const facilitator = express();
     facilitator.get("/health", (_req, res) =>
-      res.json({ facilitator: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" })
+      res.json({ facilitator: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" }),
     );
     const { server: fs, port: fPort } = await listenAsync(facilitator);
     servers.push(fs);
@@ -64,7 +67,7 @@ describe("createBeamFetch", () => {
   it("should handle 402 → sign → retry → 200 flow", async () => {
     const facilitator = express();
     facilitator.get("/health", (_req, res) =>
-      res.json({ facilitator: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" })
+      res.json({ facilitator: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" }),
     );
     const { server: fs, port: fPort } = await listenAsync(facilitator);
     servers.push(fs);
@@ -114,7 +117,7 @@ describe("createBeamFetch", () => {
   it("should throw when retry also returns 402", async () => {
     const facilitator = express();
     facilitator.get("/health", (_req, res) =>
-      res.json({ facilitator: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" })
+      res.json({ facilitator: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" }),
     );
     const { server: fs, port: fPort } = await listenAsync(facilitator);
     servers.push(fs);
@@ -148,7 +151,7 @@ describe("createBeamFetch", () => {
     });
 
     await expect(
-      beamFetch(`http://localhost:${rPort}/api/reject`)
+      beamFetch(`http://localhost:${rPort}/api/reject`),
     ).rejects.toThrow("Payment rejected by facilitator");
   });
 });
