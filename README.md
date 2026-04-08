@@ -10,6 +10,8 @@ Pay-per-request API monetization settled on-chain. No accounts. No API keys. No 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4+-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
 
+**[Live Link](https://raygate.vercel.app)** · **[Demo Video](https://www.youtube.com/watch?v=Ryw7OkVKnpM)** · **[Pitchdeck](https://gamma.app/docs/Raygate-uk9fxeaapmyx3pj)**
+
 ---
 
 ## The Problem
